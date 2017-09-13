@@ -8,14 +8,16 @@ import javax.annotation.processing.RoundEnvironment;
 public class Computer {
 	Food food = new Food();
 	Order sentOrder;
-	// List<ArrayList<Food>> menu = new ArrayList<ArrayList<Food>>();
+	ArrayList<Order> listOfOrders = new ArrayList<Order>();
+
 	ArrayList<Food> currentOrder; // = new ArrayList<Food>();
 	boolean orderFlag = false;
+	boolean tableFlag = false;
+	int tableNumber;
+	int orderNumber;
 	Scanner scan = new Scanner(System.in);
 	String choiceS;
 	int choiceInt;
-	int tableNumber;
-	boolean tableFlag = false;
 
 	public Computer() {
 		// menu.add(food.mexicanM);
@@ -31,12 +33,15 @@ public class Computer {
 	}
 
 	void show1stPage() {
-		if (!tableFlag) {
-			System.out.println("Put number of the table");
-			tableNumber = scan.nextInt();
-			tableFlag = true;
-		}
-		System.out.println("Choose:\n1) Lunch\n2) Drink\n" + "3) Show your order\n4) Send to the kitchen\n5) Exit");
+//		if (!tableFlag) {
+//			System.out.println("Put number of the table");
+//			tableNumber = scan.nextInt();
+//			tableFlag = true;
+//		}
+		//learn how to delete proper object from an aray
+		//list.remove
+		System.out.println("Choose:\n1) Lunch\n2) Drink\n" + "3) Show your order\n4) Send to the kitchen"
+				+ "\n5) Check orders\n6) Exit");
 		choiceInt = scan.nextInt();
 		if (choiceInt == 1) {
 			showCuisines();
@@ -55,11 +60,17 @@ public class Computer {
 			show1stPage();
 		} else if (choiceInt == 4) {
 			// send it to the kitchen, change
-			sentOrder = new Order(tableNumber, currentOrder);
-			
+			listOfOrders.add(new Order(orderNumber, tableNumber, currentOrder));
+			orderFlag = false;
+			tableFlag = false;
+			show1stPage();
 		} else if (choiceInt == 5) {
+			printOrders();
+			
+			
+		}else if (choiceInt == 6) {
 			System.exit(0);
-		} else {
+		}  else {
 			System.out.println("wrong number, try again");
 			show1stPage();
 		}
@@ -104,8 +115,14 @@ public class Computer {
 	void order(ArrayList<Food> menuX) {
 		System.out.println("What are you ordering?");
 		choiceInt = scan.nextInt();
+		if (!tableFlag) {
+			System.out.println("Choose table" );
+			tableNumber = scan.nextInt();
+			tableFlag = true;
+		}
 		if (orderFlag == false) {
 			currentOrder = new ArrayList<Food>();
+			orderNumber += 1;
 			orderFlag = true;
 		}
 		currentOrder.add(menuX.get(choiceInt - 1));
@@ -129,6 +146,24 @@ public class Computer {
 		}
 		order(food.dessertM);
 
+	}//add date of order!
+	void printOrders() {
+		for (Order order : listOfOrders) {
+			System.out.println(order);
+		}
+		System.out.println("1) Print order\n2) Back to current table");
+		choiceInt = scan.nextInt();
+		
+		System.out.println(listOfOrders.get(choiceInt - 1));
+		for (Food element : listOfOrders.get(choiceInt -1).getSentOrder()) {
+			System.out.println(element);
+		}
+		System.out.println("and now print object order");
+		System.out.println(orderNumber);
+		// System.out.println(sentOrder.toString(0));
+		// System.out.println(sentOrder.orderList.get(sentOrder.orderNumber
+		// -2));
+		show1stPage();
 	}
 
 }

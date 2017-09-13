@@ -5,17 +5,35 @@ public class Order {
 	int tableNumber;
 	boolean tableStatus;
 	
-	//ArrayList<Food> orderSent;
-	ArrayList<ArrayList<Food>> orderList;
+	ArrayList<Food> sentOrder = new ArrayList<>(); //czy nie musze inicijalizowac?
+	//ArrayList<ArrayList<Food>> orderList = new ArrayList<ArrayList<Food>>();
 	
-	public Order(int tableNumber, ArrayList<Food> currentOrder) {
-		this.orderNumber =+1;
+	public Order(int orderNumber, int tableNumber, ArrayList<Food> currentOrder) {
+		this.orderNumber = orderNumber;
 		this.tableNumber = tableNumber;
 		//this.orderSent = currentOrder;
-		orderList.add(currentOrder);
+		sentOrder = currentOrder;
 	}
+	public String toString() {
+		return "OrderNo:" + this.orderNumber + " Table:" +this.tableNumber + " Total Cost:" + sumPrices() ;
+	}
+	
+	public ArrayList<Food> getSentOrder() {
+		return sentOrder;
+	}
+	
+	public double sumPrices() {
+		double sum = 0;
+		for (Food item: sentOrder) {
+			sum += item.getPrice();
+		}
+		return sum;
+	}
+	
 	// jak wypisac liste z numerem zamowienia oraz numerem stoliku?
 	public String toString(int orderNumber) {
-		return "OrderNo: " + orderNumber + "at table: " +this.tableNumber +" "  ;
+		return "OrderNo:" + orderNumber + " table:" +this.tableNumber + "Sum:" + this.sentOrder ;
 	}
+	
+	
 }
